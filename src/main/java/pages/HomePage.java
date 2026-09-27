@@ -38,6 +38,7 @@ public class HomePage {
 	{
 		String url= page.url();
 		System.out.println("Page URL: "+url);
+		System.out.println("Hello");
 		return url;
 	}
 	
