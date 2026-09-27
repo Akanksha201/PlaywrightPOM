@@ -1,17 +1,17 @@
 package tests;
 
 import org.testng.Assert;
-import org.testng.annotations.AfterTest;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.BeforeTest;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import com.microsoft.playwright.Page;
 
+import basetest.BaseTest;
+import constants.Constants;
 import factorypackage.PlaywrightFactory;
 import pages.HomePage;
 
-public class HomePageTest {
+public class HomePageTest extends BaseTest {
 	
 	PlaywrightFactory pf;
 	Page page;
@@ -19,38 +19,41 @@ public class HomePageTest {
 	HomePage homePage;
 	
 	
-	@BeforeMethod
-	public void setUp()
-	{
-		pf= new PlaywrightFactory();
-		page=pf.initBrowser("chrome");
-		
-		homePage=new HomePage(page);
-		
-	}
 	
 	
 	@Test
 	public void homePageTititleTest()
 	{
 		String actualTitle=homePage.gethomePageTitle();
-		Assert.assertEquals(actualTitle, "Your Store");
+		Assert.assertEquals(actualTitle, Constants.LOGIN_PAGE_TITLE);
 	}
 	
 	@Test
 	public void homepageURLTest()
 	{
 		String actualURL= homePage.getHomePageURL();
-		Assert.assertEquals(actualURL, "https://naveenautomationlabs.com/opencart/");
+		Assert.assertEquals(actualURL, prop.getProperty("URL").trim());
 	}
 	
-	@Test
-	public void homePageHeadertest()
+	
+	
+	@DataProvider
+	public Object[][] getProductData()
 	{
-		String actualHeader=homePage.doHomePageSearch("Macbook");
-		Assert.assertEquals(actualHeader, "Search - Macbook");
-		
-	}
+		return new Object[][] {
+			
+			{"Macbook" },{"iMac" },{"Samsung" }};
+		}
+	
+
+@Test(dataProvider="getProductData")
+public void searchTest(String productName)
+{
+	String actualSeachHeader=homePage.doHomePageSearch(productName);
+	Assert.assertEquals(actualSeachHeader, "Search- " +productName);
+
+
+
 	
 	
 	
@@ -58,10 +61,6 @@ public class HomePageTest {
 	
 	
 	
-	@AfterTest
-	public void tearDown()
-	{
-		page.context().browser().close();
-	}
+	
 
 }

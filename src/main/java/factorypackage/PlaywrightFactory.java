@@ -1,6 +1,10 @@
 package factorypackage;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.nio.file.Paths;
+import java.util.Properties;
 
 import com.microsoft.playwright.Browser;
 import com.microsoft.playwright.BrowserContext;
@@ -14,8 +18,11 @@ public class PlaywrightFactory {
     Browser browser;
     BrowserContext browserContext;
     Page page;
+    Properties prop;
 
-    public Page initBrowser(String browserName) {
+    public Page initBrowser(Properties prop) {
+    	
+    	String browserName=prop.getProperty("browser").trim();
 
         playwright = Playwright.create();
 
@@ -65,8 +72,24 @@ public class PlaywrightFactory {
         browserContext = browser.newContext();
         page = browserContext.newPage();
 
-        page.navigate("https://naveenautomationlabs.com/opencart/");
+        page.navigate(prop.getProperty("URL").trim());
 
         return page;
+    }
+        
+        public Properties init_prop()
+        {
+        	try {
+        	FileInputStream ip=new FileInputStream("\\src\\test\\resources\\resources\\config.properties");
+        	prop=new Properties();
+        	prop.load(ip);
+        }catch(FileNotFoundException e)
+        	{
+        	e.fillInStackTrace();
+        	}catch(IOException e)
+        	{
+        		e.printStackTrace();
+        	}
+			return prop;
     }
 }
