@@ -11,6 +11,13 @@ import constants.Constants;
 import factorypackage.PlaywrightFactory;
 import pages.HomePage;
 
+/**
+ * 
+ * 
+ * @param productName=Online Cart
+ * @author Akanksha
+ */
+
 public class HomePageTest extends BaseTest {
 	
 	PlaywrightFactory pf;
@@ -50,6 +57,7 @@ public class HomePageTest extends BaseTest {
 public void searchTest(String productName)
 {
 	String actualSeachHeader=homePage.doHomePageSearch(productName);
+	
 	Assert.assertEquals(actualSeachHeader, "Search- " +productName);
 
 
